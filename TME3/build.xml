@@ -1,42 +1,36 @@
-<project name="dataflow" default="compile" basedir=".">
+<project name="switch" default="compile" basedir=".">
     <description>
-        The build file for the Spec example/
+        The build file for the Tamago example Remocar
     </description>
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
   <property name="bin" location="bin"/>
 
-  <!-- METTRE ICI LE NOM DU BINOME -->
-  <property name="nom1" value="EYRAUD Matthieu"/>
-  <property name="nom2" value="HAMISSI Fatemeh"/>
-
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
-    <!-- Create the build directory structure used by compile -->
+    <!-- Create the bin directory structure used by compile -->
     <mkdir dir="${bin}"/>
   </target>
 
   <target name="compile" depends="init"
         description="compile the source " >
-    <!-- Compile the java code from ${src} into ${build} -->
+    <!-- Compile the java code from ${src} into ${bin} -->
     <javac debug="true" srcdir="${src}" excludes="" destdir="${bin}" includeantruntime="false" />
   </target>
 
   <target name="run" depends="compile"
-          description="run examples">
-    <echo>================ Main  ================</echo>
-    <java classname="filePrio.main.FilePrioMain"
-          classpath="${bin}">
-       <arg value="30"/>
-    </java>
-
+          description="run example">
+    <!--<echo>================ Run Maleva simulator ================</echo>-->
+    <java classname="switchex.main.SwitchMain" classpath="${bin}" />
+    <!--   <arg value="100"/>
+    </java>-->
   </target>
 
   <target name="dist" depends="init,clean"
-        description="Generate distribution distribution" >
+        description="Generer la distribution" >
     <!-- tout mettre dans l'archive -->
-    <jar basedir="." jarfile="../TME3-Spec-${nom1}-${nom2}-${DSTAMP}.jar"/>
+    <jar basedir="." jarfile="../Switch-contract-example-${DSTAMP}.jar" />
   </target>
 
   <target name="clean"
@@ -47,7 +41,7 @@
              <include name="**/*~"/>
            </fileset>
         </delete>
-        <echo>================ Removing build directory ================</echo>    
+        <echo>================ Removing bin directory ================</echo>    
 	<delete dir="${bin}"/>
   </target>
 </project>

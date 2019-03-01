@@ -1,4 +1,4 @@
-package filePrios.service;
+package src.fileprio.service;
 
 import java.util.HashSet;
 
@@ -9,7 +9,7 @@ public interface FilePrios<T> {
 	public int getSize();
 	public boolean isEmpty();
 	public HashSet<Integer> getActivePrio();
-	public boolean isActive();
+	public boolean isActive(int i);
 	public int getMaxPrio();
 	public int getSizePrio(int i);
 	// \pre getSize(i) > 0
