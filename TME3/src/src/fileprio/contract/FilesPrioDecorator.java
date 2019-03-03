@@ -1,11 +1,25 @@
 package src.fileprio.contract;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import src.fileprio.service.FilePrios;
 
 public abstract class FilesPrioDecorator<T> implements FilePrios<T>{
+	
+	private FilePrios<T> delegates;
+
+	public FilesPrioDecorator(FilePrios<T> delegates) {
+		super();
+		this.delegates = delegates;
+	}
+
+	public void init() {
+		delegates.init();
+	}
+	
 	public int getSize() {
 		return delegates.getSize();
 	}
@@ -14,7 +28,7 @@ public abstract class FilesPrioDecorator<T> implements FilePrios<T>{
 		return delegates.isEmpty();
 	}
 
-	public HashSet<Integer> getActivePrio() {
+	public Set<Integer> getActivePrio() {
 		return delegates.getActivePrio();
 	}
 
@@ -42,10 +56,6 @@ public abstract class FilesPrioDecorator<T> implements FilePrios<T>{
 		return delegates.getElemPrio(i, k);
 	}
 
-	public void init() {
-		delegates.init();
-	}
-
 	public void putPrio(int i, T t) {
 		delegates.putPrio(i, t);
 	}
@@ -62,17 +72,19 @@ public abstract class FilesPrioDecorator<T> implements FilePrios<T>{
 		delegates.remove();
 	}
 	
-	/*
+	
 	public HashMap<Integer, Integer> size_prios() {
 		return delegates.size_prios();
-	}*/
-
-	private FilePrios<T> delegates;
-
-	public FilesPrioDecorator(FilePrios<T> delegates) {
-		super();
-		this.delegates = delegates;
 	}
+	
+	public HashMap<Integer, ArrayList<T>> elem_prios() {
+		return delegates.elems_prios();
+	}
+	
+	public void print_file() {
+		delegates.print_file();		
+	}
+
 	
 	
 }

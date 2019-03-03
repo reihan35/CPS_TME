@@ -1,7 +1,9 @@
 package src.fileprio.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public interface FilePrios<T> {
 
@@ -9,7 +11,7 @@ public interface FilePrios<T> {
 	
 	public int getSize();
 	public boolean isEmpty();
-	public HashSet<Integer> getActivePrio();
+	public Set getActivePrio();
 	public boolean isActive(int i);
 	public int getMaxPrio();
 	public int getSizePrio(int i);
@@ -21,6 +23,11 @@ public interface FilePrios<T> {
 	// \pre k <= getSizePrio(i)
 	// \pre k>0
 	public T getElemPrio(int i,int k);
+	public HashMap<Integer, Integer> size_prios();
+	public HashMap<Integer, ArrayList<T>> elems_prios();
+	public void print_file();
+
+	
 	
 	/* \invariants */
 	// \inv: getSize() = \Somme(\Forall i \in getActivePrio() getSizePrio(i)) 
@@ -53,13 +60,12 @@ public interface FilePrios<T> {
 	public void putPrio(int i, T t);
 	
 	// \pre: e != NULL
-	// \post: put(e)@pre == putPrio(e, getMaxPrio()@pre)@pre 
-	//cloner les 2 objets et vérifier si on arrive sur le meme etat en sortie (vérifier pour des observateurs judicieusement choisis)
+	// \post: put(e) == putPrio(e, getMaxPrio()) 
 	public void put(T e);
 	
 	// \pre: getSizePrio(i) > 0
-	// \post: (getSizePrio(i) > 1) \impl (getActivePrios() == getActivePrios()@pre)
-	// \post: (getSizePrio(i) == 1) \impl (getActivePrios() == getActivePrios()@pre\{i})
+	// \post: size_prio_at_pre > 1 \impl (getActivePrios() == getActivePrios()@pre)
+	// \post: size_prio_at_pre == 1) \impl (getActivePrios() == getActivePrios()@pre\{i})
 	// \post: getSizePrio(i) == getSizePrios(i)@pre -1
 	// \post: \Forall j \with (j \in getActivePrios()\{i}), getSizePrio(j) == getSizePrio(j)@pre
 	// \post: \Forall k \with (1 < k < getSizePrio(i)@pre - 1), getElemPrio(i, k) == getElemPrio(i, k)@pre
@@ -67,11 +73,6 @@ public interface FilePrios<T> {
 	public void removePrio(int i);
 	
 	// \pre: getSize() > 0
-	// \post: remove()@pre = removePrio(getMaxPrio()@pre)}pre
+	// \post: remove() = removePrio(getMaxPrio())
 	public void remove();
-	
-	public HashMap<Integer, Integer> size_prios();
-	
-	public HashMap<Integer, Integer> elems_prios();
-
 }
