@@ -182,7 +182,6 @@ public class FilePrioContract<T> extends FilesPrioDecorator<T> {
 		// TRAITEMENT
 		
 		super.putPrio(i,e);
-		print_file();
 
 		// post-invariant
 		checkInvariant();
@@ -194,7 +193,6 @@ public class FilePrioContract<T> extends FilesPrioDecorator<T> {
 	
 	
 	public void put(T e) {
-		System.out.println("j'ai commencé moi");		
 
 		// \pre: e != NULL
 		if(e == null) {
@@ -210,7 +208,6 @@ public class FilePrioContract<T> extends FilesPrioDecorator<T> {
 		
 		// TRAITEMENT
 		super.put(e);
-		print_file();
 		
 		// post-invariant
 		checkInvariant();
@@ -230,7 +227,6 @@ public class FilePrioContract<T> extends FilesPrioDecorator<T> {
 			throw new PostconditionError("(getSizePrio(i) > 1) \\impl (getActivePrios() == getActivePrios()@pre) ");
 		}
 		
-		System.out.println(getSizePrio(i));
 		
 		// \post: (size_prio_at_pre == 1) \impl (getActivePrios() == getActivePrios()@pre\{i})
 		Set<Integer> z = new HashSet<Integer>(getActive_at_pre);
@@ -240,7 +236,6 @@ public class FilePrioContract<T> extends FilesPrioDecorator<T> {
 			}
 		}
 		
-		System.out.println(size_prio_at_pre - 1);
 		// \post: getSizePrio(i) == getSizePrio(i)@pre - 1
 		if(getSizePrio(i) != size_prio_at_pre - 1) {
 			throw new PostconditionError("getSizePrio(i) == getSizePrio(i)@pre - 1");

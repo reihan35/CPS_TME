@@ -118,12 +118,10 @@ public class FilePrioImpl<T> implements FilePrios<T> {
 	public void putPrio(int i, T t) {
 		// TODO Auto-generated method stub
 		if (!isActive(i)) {
-			System.out.println("coucouuuu");
 			activePrio.put(i,1);
 			ArrayList<T> a = new ArrayList<T>();
 			a.add(t);
 			file.put(i,a);
-			//System.out.println(activePrio);
 		}
 		else {
 			activePrio.put(i,activePrio.get(i)+1);
@@ -142,7 +140,6 @@ public class FilePrioImpl<T> implements FilePrios<T> {
 	public void removePrio(int i) {
 		// TODO Auto-generated method stub
 		if (activePrio.get(i)==1) {
-			System.out.println("Hello");
 			activePrio.remove(i);
 			file.remove(i);
 		}

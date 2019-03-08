@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="TME3/src"/>
+	<classpathentry kind="src" path="TME4-Bridge/src"/>
+	<classpathentry kind="src" path="TME5-LiftModel/src"/>
+	<classpathentry kind="lib" path="TME3-CPS-HAMISSI-EYRAUD.jar"/>
+	<classpathentry kind="lib" path="TME4-Bridge-EYRAUD Matthieu-HAMISSI Fatemeh-20190307.jar"/>
+	<classpathentry kind="lib" path="TME5-LiftModel/jars/junit.jar"/>
+	<classpathentry kind="lib" path="TME5-LiftModel/jars/lift1.jar"/>
+	<classpathentry kind="lib" path="TME5-LiftModel/jars/lift2.jar"/>
+	<classpathentry kind="lib" path="TME5-LiftModel/jars/lift3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="output" path="TME4-Bridge/bin"/>
+</classpath>
