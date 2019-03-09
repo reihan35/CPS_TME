@@ -16,6 +16,17 @@ public class CommandsImpl implements CommandsService {
 		this.init();
 	}
 	
+	public CommandsImpl clone() {
+		CommandsImpl res = new CommandsImpl();
+		for(int i = 0; i < nbUpCommands; i++) {
+			res.addUpCommand(getUpCommand(i));
+		}
+		for(int j = 0; j < nbDownCommands; j++) {
+			res.addDownCommand(getDownCommand(j));
+		}
+		return res;
+	}
+	
 	public void init() {
 		upCommands = new CmdEntry(-1,null);
 		nbUpCommands = 0;
@@ -178,6 +189,29 @@ public class CommandsImpl implements CommandsService {
 		}
 
 
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (o instanceof CommandsImpl) {
+			CommandsImpl ci = (CommandsImpl)o;
+			if(ci.getNbUpCommands() == getNbUpCommands() && ci.getNbDownCommands() == getNbDownCommands()) {
+				for(int i = 0; i < getNbUpCommands(); i++) {
+					if(!(ci.getUpCommand(i)==getUpCommand(i))) {
+						return false;
+					}
+				}
+				for(int i=0; i < getNbDownCommands(); i++) {
+					if(!(ci.getDownCommand(i)==getDownCommand(i))) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

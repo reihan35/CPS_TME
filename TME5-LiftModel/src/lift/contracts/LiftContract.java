@@ -1,6 +1,7 @@
 package lift.contracts;
 
 import lift.decorators.LiftDecorator;
+import lift.services.CommandsService;
 import lift.services.DoorStatus;
 import lift.services.LiftService;
 import lift.services.LiftStatus;
@@ -184,6 +185,8 @@ public class LiftContract extends LiftDecorator {
 		// inv pre
 		checkInvariant();
 		
+		//capture
+		CommandsService commands_atPre = getCommands().clone();
 		// run
 		super.endMoveUp();
 		
@@ -196,7 +199,10 @@ public class LiftContract extends LiftDecorator {
 		}
 		
 		// post: getCommands().endUpCommand();
-		// TODO
+		commands_atPre.endUpCommand();
+		if(!(getCommands().equals(commands_atPre))) {
+			throw new PostconditionError("post: getCommands().endUpCommand()");
+		}
 
 	}
 	
@@ -279,12 +285,14 @@ public class LiftContract extends LiftDecorator {
 		}
 
 		// pre: getLevel() == getCommands().getNextDownCommand()
+		System.out.println("getlvl vaut " + getLevel());
 		if(!(getLevel() == getCommands().getNextDownCommand())) {
 			throw new PreconditionError("L'étage courant n'est pas égal à la commande suivante");
 		}
 
 		// inv pre
 		checkInvariant();
+		CommandsService commands_atPre = getCommands().clone();
 		
 		// run
 		super.endMoveDown();
@@ -298,7 +306,10 @@ public class LiftContract extends LiftDecorator {
 		}
 		
 		// post: getCommands().endDownCommand();
-		// TODO
+		commands_atPre.endDownCommand();
+		if(!(getCommands().equals(commands_atPre))) {
+			throw new PostconditionError("post: getCommands().endDownCommand()");
+		}
 
 	}
 
@@ -335,7 +346,6 @@ public class LiftContract extends LiftDecorator {
 	@Override
 	public void closeDoor() {
 		// pre: getDoorStatus() == OPENED
-		System.out.println("getdoorstatus " + getDoorStatus());
 		if(!(getDoorStatus() == DoorStatus.OPENED)) {
 			throw new PreconditionError("La porte n'est pas ouverte");
 		}
@@ -409,15 +419,12 @@ public class LiftContract extends LiftDecorator {
 			} else if(getCommands().getNbUpCommands() > 0) {
 				if(!(getLiftStatus() == LiftStatus.STANDBY_UP)) {
 					throw new PostconditionError("L'ascenseur n'est pas prêt en montée");
-				}
-			} else {
-				if(!(getLiftStatus() == LiftStatus.IDLE)) {
-					throw new PostconditionError("L'ascenseur n'est pas en attente");
-				}
+				}	
 			}
-		} else {
-			if(!(getLiftStatus() == getLiftStatus_atPre)) {
-				throw new PostconditionError("L'état de l'ascenseur n'aurait pas du changer");
+		}
+		 else {
+			if(!(getLiftStatus() == LiftStatus.IDLE)) {
+				throw new PostconditionError("L'ascenseur n'est pas en attente");			
 			}
 		}
 		

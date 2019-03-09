@@ -74,4 +74,8 @@ public class CommandsDecorator implements CommandsService {
 		delegate.endDownCommand();
 	}
 	
+	@Override
+	public CommandsService clone() {
+		return delegate.clone();
+	}
 }

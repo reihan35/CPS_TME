@@ -1,10 +1,13 @@
 package lift.contracts;
 
+import java.util.Random;
+
 import lift.decorators.CommandsDecorator;
 import lift.services.CommandsService;
 
 public class CommandsContract extends CommandsDecorator {
 	
+	Random rand = new Random();
 	public CommandsContract(CommandsService delegate) {
 		super(delegate);
 	}
@@ -12,11 +15,45 @@ public class CommandsContract extends CommandsDecorator {
 	public void checkInvariant() {
 		// inv: hasUpCommand(Integer cmd) 
 		//      ==  \exists i \in [0..getNbUpCommands()-1] { getUpCommand(i) == cmd }
-		// TODO
 		
+		Integer cmd = -(rand.nextInt());
+		if(hasUpCommand(cmd)) {
+			boolean found_command = false;
+			for(int i=0; i < getNbUpCommands()-1;i++) {
+				if(getUpCommand(i) == cmd) {
+					found_command = true;
+					break;
+				}
+				if(!found_command)
+					throw new InvariantError("HasUpCommand ne renvoie pas la bonne valeur");
+			}
+		}
+		cmd = getUpCommand(getNbUpCommands()-1);
+		if(cmd>=0) {
+			if(!hasUpCommand(cmd)) {
+				throw new InvariantError("HasUpCommand ne renvoie pas la bonne valeur");
+			}
+		}
 		// inv: hasDownCommand(Integer cmd) 
 		//      ==  \exists i \in [0..getNbDownCommands()-1] { getDownCommand(i) == cmd }	
-		// TODO
+		cmd = -(rand.nextInt());
+		if(hasDownCommand(cmd)) {
+			boolean found_command = false;
+			for(int i=0; i < getNbDownCommands()-1;i++) {
+				if(getDownCommand(i) == cmd) {
+					found_command = true;
+					break;
+				}
+				if(!found_command)
+					throw new InvariantError("HasDownCommand ne renvoie pas la bonne valeur");
+			}
+		}
+		cmd = getDownCommand(getNbDownCommands()-1);
+		if(cmd>=0) {
+			if(!hasDownCommand(cmd)) {
+				throw new InvariantError("HasDownCommand ne renvoie pas la bonne valeur");
+			}
+		}
 		
 		// inv: forall i:Integer \in [0..getNbUpCommands()-1] {
 		//          getUpCommand(i) < getUpCommand(i+1)
@@ -143,6 +180,7 @@ public class CommandsContract extends CommandsDecorator {
 		}
 		// captures
 		int getNbUpCommands_atPre = getNbUpCommands();
+		CommandsService commands_atPre = super.clone();
 		// inv@pre
 		checkInvariant();
 		// run
@@ -164,7 +202,32 @@ public class CommandsContract extends CommandsDecorator {
 		 *            }
 		 *       }
 		 */
-		// TODO
+		//not tested as it is prob not used by lift imp^lementation, all done for nothing......
+		boolean failed = false;
+		for(int j=0; j < getNbUpCommands() + 1;j++) {
+			failed = false;
+			for(int i = 0; i < j; j++) {
+				if(!(getUpCommand(i) == commands_atPre.getUpCommand(i)&&
+						getUpCommand(i) < getUpCommand(i+1) &&
+						getUpCommand(j) == cmd)) {
+					failed = true;
+					break;
+				}
+				
+			}
+			for(int k = j; k < getNbUpCommands()-1;k++) {
+				if(!(getUpCommand(k+1) == commands_atPre.getUpCommand(k) &&
+						getUpCommand(k) < getUpCommand(k+1))) {
+					failed = true;
+					break;
+				}
+			}
+			if(!failed) break;
+		}
+		if(failed)
+			throw new PostconditionError("GetNbUpCommand a changé");
+		
+			
 	}
 
 	@Override

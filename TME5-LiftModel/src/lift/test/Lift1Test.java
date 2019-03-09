@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
 import lift.contracts.CommandsContract;
 import lift.contracts.InvariantError;
@@ -16,6 +15,7 @@ import lift.contracts.PreconditionError;
 import lift.impl.CommandsImpl;
 import lift.services.CommandsService;
 import liftimpl1.Lift1;
+import liftimpl3.Lift3;
 
 public class Lift1Test extends AbstractLiftTest {
 
@@ -124,11 +124,12 @@ public class Lift1Test extends AbstractLiftTest {
 		lcontract.endMoveUp();
 	}
 	
+	@Test
 	public void openDoor_precondition() {
 		LiftContract lcontract = new LiftContract(new Lift1());
 		lcontract.init(2, 5);
 		lcontract.closeDoor();
-		lcontract.openDoor();
+		lcontract.doorAck();
 		try {
 			lcontract.openDoor();
 		}catch(Error e) {
@@ -164,7 +165,94 @@ public class Lift1Test extends AbstractLiftTest {
 	
 	}
 	
-	//Transitions
+	//II. Transitions (on verifie juste qu'il n'y a pas d'erreur levée
+	@Test
+	public void init_transition() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+	}
+	
+	
+	@Test
+	public void beginMoveup_transition() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+		lcontract.getCommands().addUpCommand(3);
+		lcontract.closeDoor();
+		lcontract.doorAck();
+		lcontract.beginMoveUp();
+	}
+	
+	@Test
+	public void beginMoveDown_transition() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+		lcontract.getCommands().addDownCommand(1);
+		lcontract.closeDoor();
+		lcontract.doorAck();
+		lcontract.beginMoveDown();
+	}
+	
+	@Test
+	public void openDoor_transition() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+		lcontract.closeDoor();
+		lcontract.doorAck();
+		lcontract.openDoor();
+	}
+	
+	@Test
+	public void selectLevel_transition() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+		lcontract.selectLevel(3);
+	}
+	
+	//... not doing all transitions, but check for every method it doesn't blow up when called with righful parameters
+	
+	// III; Etats remarquables: faire descendre l'ascenseur lorsqu'il est tout en bas
+	
+	//doit lever une exception d'invariant
+	@Test (expected=InvariantError.class)
+	public void check_boundings() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+		lcontract.getCommands().addDownCommand(1);
+		lcontract.closeDoor();
+		lcontract.doorAck();
+		lcontract.beginMoveDown();
+		lcontract.stepMoveDown();
+	}
+	
+	//IV. Paires de transition
+	
+	//V. Scénario
+	@Test
+	//Aller a l'étage 4 (2 étages), puis redescendre a l'étage 3. On teste ainsi à peu près toutes les fonctions
+	// et une suite d'opérations cohérentes pour l'utilisation de l'ascenseur
+	public void scenario_1() {
+		LiftContract lcontract = new LiftContract(new Lift1());
+		lcontract.init(2, 5);
+
+		lcontract.selectLevel(4);
+		lcontract.closeDoor();
+		lcontract.doorAck();
+		lcontract.beginMoveUp();
+		lcontract.stepMoveUp();
+		lcontract.stepMoveUp();
+		lcontract.endMoveUp();
+		lcontract.openDoor();
+		lcontract.doorAck();
+		lcontract.getCommands().addDownCommand(3);
+		lcontract.closeDoor();
+		lcontract.doorAck();
+		lcontract.beginMoveDown();
+		lcontract.stepMoveDown();
+		lcontract.endMoveDown();
+		lcontract.openDoor();
+		lcontract.doorAck();
+	}
 	
 	
 

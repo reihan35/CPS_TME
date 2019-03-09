@@ -97,4 +97,6 @@ public interface CommandsService {
 	  */
 	public void endDownCommand();
 	
+	public CommandsService clone();
+	
 }
