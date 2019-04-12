@@ -1,0 +1,23 @@
+digraph p_feu {
+size="8,10";
+  GT [shape=box,style=dotted,label="feu"];
+  GT -> S10;
+	S10 -> S2  [color=black,style=bold,label="((status==3))"];
+	S10 -> S5  [color=black,style=bold,label="(((status==2)&&(light_col==3)))"];
+	S10 -> S7  [color=black,style=bold,label="(((status==2)&&(light_col==2)))"];
+	S10 -> S9  [color=black,style=bold,label="(((status==2)&&(light_col==1)))"];
+	S2 -> S3  [color=black,style=bold,label="status = 2"];
+	S3 -> S10  [color=black,style=bold,label="light_col = 3"];
+	S5 -> S10  [color=black,style=bold,label="light_col = 2"];
+	S7 -> S10  [color=black,style=bold,label="light_col = 1"];
+	S9 -> S10  [color=black,style=bold,label="light_col = 3"];
+}
+digraph init {
+size="8,10";
+  GT [shape=box,style=dotted,label="init"];
+  GT -> S1;
+	S1 -> S2  [color=black,style=bold,label="status = 3"];
+	S2 -> S3  [color=black,style=bold,label="light_col = 4"];
+	S3 -> S0  [color=black,style=solid,label="-end-"];
+  S3 [color=blue,style=bold,shape=box];
+}

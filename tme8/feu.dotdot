@@ -1,0 +1,56 @@
+digraph p_feu {
+size="8,10";
+  GT [shape=box,style=dotted,label="feu"];
+  GT -> S24;
+	S24 -> S2  [color=black,style=bold,label="((status==3))"];
+	S24 -> S8  [color=black,style=bold,label="(((status==2)&&(light_col==3)))"];
+	S24 -> S12  [color=black,style=bold,label="(((status==2)&&(light_col==2)))"];
+	S24 -> S16  [color=black,style=bold,label="(((status==2)&&(light_col==1)))"];
+	S24 -> S20  [color=black,style=bold,label="(1)"];
+	S2 -> S3  [color=black,style=bold,label="status = 2"];
+	S3 -> S4  [color=black,style=bold,label="clignotant = 0"];
+	S4 -> S5  [color=black,style=bold,label="light_col = 3"];
+	S5 -> S6  [color=black,style=bold,label="ch_col!light_col"];
+	S6 -> S24  [color=black,style=bold,label="ch_cli!clignotant"];
+	S8 -> S9  [color=black,style=bold,label="light_col = 2"];
+	S9 -> S10  [color=black,style=bold,label="ch_col!light_col"];
+	S10 -> S24  [color=black,style=bold,label="ch_cli!clignotant"];
+	S12 -> S13  [color=black,style=bold,label="light_col = 1"];
+	S13 -> S14  [color=black,style=bold,label="ch_col!light_col"];
+	S14 -> S24  [color=black,style=bold,label="ch_cli!clignotant"];
+	S16 -> S17  [color=black,style=bold,label="light_col = 3"];
+	S17 -> S18  [color=black,style=bold,label="ch_col!light_col"];
+	S18 -> S24  [color=black,style=bold,label="ch_cli!clignotant"];
+	S20 -> S21  [color=black,style=bold,label="((light_col==1))"];
+	S21 -> S22  [color=black,style=bold,label="clignotant = 1"];
+	S22 -> S23  [color=black,style=bold,label="ch_col!light_col"];
+	S23 -> S24  [color=black,style=bold,label="ch_cli!clignotant"];
+}
+digraph p_obs {
+size="8,10";
+  GT [shape=box,style=dotted,label="obs"];
+  GT -> S1;
+	S1 -> S2  [color=black,style=bold,label="ch_col?light_col_ch1"];
+	S2 -> S5  [color=black,style=bold,label="ch_cli?clignotant_ch1"];
+	S5 -> S7  [color=black,style=solid,label="((clignotant_ch1&&((light_col_ch1==3)||(light_col_ch1==2))))"];
+	S7 -> S8  [color=black,style=bold,label="ch_col?light_col_ch2"];
+	S8 -> S19  [color=black,style=bold,label="ch_cli?clignotant_ch2"];
+	S19 -> S21  [color=black,style=solid,label="(((light_col_ch1==3)&&(light_col_ch2==1)))"];
+	S19 -> S21  [color=black,style=solid,label="(((light_col_ch1==2)&&(light_col_ch2==3)))"];
+	S19 -> S21  [color=black,style=solid,label="(((light_col_ch1==1)&&(light_col_ch2==2)))"];
+	S19 -> S5  [color=black,style=solid,label="(1)"];
+	S21 -> S0  [color=black,style=solid,label="-end-"];
+  S21 [color=blue,style=bold,shape=box];
+}
+digraph init {
+size="8,10";
+  GT [shape=box,style=dotted,label="init"];
+  GT -> S1;
+	S1 -> S2  [color=black,style=bold,label="status = 3"];
+	S2 -> S3  [color=black,style=bold,label="light_col = 1"];
+	S3 -> S6  [color=black,style=bold,label="clignotant = 1"];
+	S6 -> S5  [color=black,style=dashed,label="(run feu())"];
+	S5 -> S7  [color=black,style=solid,label="(run obs())"];
+	S7 -> S0  [color=black,style=solid,label="-end-"];
+  S7 [color=blue,style=bold,shape=box];
+}
