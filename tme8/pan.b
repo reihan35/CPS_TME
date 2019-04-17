@@ -6,26 +6,25 @@
 
 	case 3: // STATE 1
 		;
-		now.status = trpt->bup.oval;
+		now.b1 = trpt->bup.oval;
 		;
 		goto R999;
 
 	case 4: // STATE 2
 		;
-		now.light_col = trpt->bup.oval;
+		now.b2 = trpt->bup.oval;
 		;
 		goto R999;
 
 	case 5: // STATE 3
 		;
-		now.clignotant = trpt->bup.oval;
+		now.turn = trpt->bup.oval;
 		;
 		goto R999;
 
 	case 6: // STATE 4
 		;
-		;
-		delproc(0, now._nr_pr-1);
+		now.cs_counter = trpt->bup.oval;
 		;
 		goto R999;
 
@@ -50,203 +49,118 @@
 		;
 		goto R999;
 
-		 /* PROC obs */
+		 /* PROC proc2 */
 
 	case 10: // STATE 1
 		;
-		XX = 1;
-		unrecv(now.ch, XX-1, 0, ((P2 *)this)->c1, 1);
-		unrecv(now.ch, XX-1, 1, ((P2 *)this)->c2, 0);
-		unrecv(now.ch, XX-1, 2, ((int)((P2 *)this)->cli), 0);
-		((P2 *)this)->c1 = trpt->bup.ovals[0];
-		((P2 *)this)->c2 = trpt->bup.ovals[1];
-		((P2 *)this)->cli = trpt->bup.ovals[2];
-		;
-		;
-		ungrab_ints(trpt->bup.ovals, 3);
-		goto R999;
-
-	case 11: // STATE 2
-		;
-	/* 0 */	((P2 *)this)->c2 = trpt->bup.oval;
-		;
+		((P1 *)this)->count = trpt->bup.oval;
 		;
 		goto R999;
-
-	case 12: // STATE 5
+;
 		;
-	/* 0 */	((P2 *)this)->c2 = trpt->bup.oval;
+		
+	case 12: // STATE 3
 		;
+		now.b2 = trpt->bup.oval;
+		;
+		goto R999;
+;
+		;
+		;
+		;
+		
+	case 15: // STATE 8
+		;
+		now.turn = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 13: // STATE 8
+	case 16: // STATE 12
 		;
-	/* 0 */	((P2 *)this)->c2 = trpt->bup.oval;
+		now.cs_counter = trpt->bup.oval;
 		;
+		goto R999;
+;
+		;
+		
+	case 18: // STATE 14
+		;
+		now.cs_counter = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 14: // STATE 11
+	case 19: // STATE 15
 		;
-	/* 0 */	((P2 *)this)->cli = trpt->bup.oval;
-		;
+		now.b2 = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 15: // STATE 19
+	case 20: // STATE 16
+		;
+		((P1 *)this)->count = trpt->bup.oval;
+		;
+		goto R999;
+
+	case 21: // STATE 25
 		;
 		p_restor(II);
 		;
 		;
 		goto R999;
 
-		 /* PROC panne */
+		 /* PROC proc1 */
 
-	case 16: // STATE 2
+	case 22: // STATE 1
 		;
-		now.status = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 17: // STATE 6
-		;
-		p_restor(II);
-		;
-		;
-		goto R999;
-
-		 /* PROC feu */
-;
-		;
-		
-	case 19: // STATE 2
-		;
-		now.status = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 20: // STATE 3
-		;
-		now.clignotant = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 21: // STATE 4
-		;
-		now.light_col = trpt->bup.oval;
+		((P0 *)this)->count = trpt->bup.oval;
 		;
 		goto R999;
 ;
 		;
 		
-	case 23: // STATE 6
+	case 24: // STATE 3
 		;
-		((P0 *)this)->couleur1 = trpt->bup.oval;
+		now.b1 = trpt->bup.oval;
+		;
+		goto R999;
+;
+		;
+		;
+		;
+		
+	case 27: // STATE 8
+		;
+		now.turn = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 24: // STATE 7
+	case 28: // STATE 12
 		;
-		now.light_col = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 25: // STATE 8
-		;
-		_m = unsend(now.ch);
+		now.cs_counter = trpt->bup.oval;
 		;
 		goto R999;
 ;
 		;
 		
-	case 27: // STATE 10
+	case 30: // STATE 14
 		;
-		((P0 *)this)->couleur1 = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 28: // STATE 11
-		;
-		now.light_col = trpt->bup.oval;
+		now.cs_counter = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 29: // STATE 12
+	case 31: // STATE 15
 		;
-		_m = unsend(now.ch);
-		;
-		goto R999;
-;
-		;
-		
-	case 31: // STATE 14
-		;
-		((P0 *)this)->couleur1 = trpt->bup.oval;
+		now.b1 = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 32: // STATE 15
+	case 32: // STATE 16
 		;
-		now.light_col = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 33: // STATE 16
-		;
-		_m = unsend(now.ch);
+		((P0 *)this)->count = trpt->bup.oval;
 		;
 		goto R999;
 
-	case 34: // STATE 18
-		;
-		((P0 *)this)->couleur1 = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 35: // STATE 19
-		;
-		now.clignotant = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 36: // STATE 20
-		;
-		now.light_col = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 37: // STATE 21
-		;
-		_m = unsend(now.ch);
-		;
-		goto R999;
-
-	case 38: // STATE 27
-		;
-		((P0 *)this)->couleur1 = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 39: // STATE 28
-		;
-		now.light_col = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 40: // STATE 29
-		;
-		now.clignotant = trpt->bup.oval;
-		;
-		goto R999;
-
-	case 41: // STATE 30
-		;
-		_m = unsend(now.ch);
-		;
-		goto R999;
-
-	case 42: // STATE 34
+	case 33: // STATE 25
 		;
 		p_restor(II);
 		;

@@ -22,115 +22,93 @@ settable(void)
 {	Trans *T;
 	Trans *settr(int, int, int, int, int, char *, int, int, int);
 
-	trans = (Trans ***) emalloc(5*sizeof(Trans **));
+	trans = (Trans ***) emalloc(4*sizeof(Trans **));
 
-	/* proctype 3: :init: */
+	/* proctype 2: :init: */
 
-	trans[3] = (Trans **) emalloc(9*sizeof(Trans *));
+	trans[2] = (Trans **) emalloc(9*sizeof(Trans *));
 
-	trans[3][1]	= settr(59,0,2,3,3,"status = 3", 1, 2, 0);
-	trans[3][2]	= settr(60,0,3,4,4,"light_col = 1", 1, 2, 0);
-	trans[3][3]	= settr(61,0,7,5,5,"clignotant = 1", 1, 2, 0);
-	T = trans[ 3][7] = settr(65,2,0,0,0,"ATOMIC", 0, 2, 0);
-	T->nxt	= settr(65,2,4,0,0,"ATOMIC", 0, 2, 0);
-	trans[3][4]	= settr(62,2,5,6,6,"(run feu())", 0, 2, 0);
-	trans[3][5]	= settr(63,2,6,7,7,"(run obs())", 0, 2, 0);
-	trans[3][6]	= settr(64,0,8,8,8,"(run panne())", 0, 2, 0);
-	trans[3][8]	= settr(66,0,0,9,9,"-end-", 0, 3500, 0);
+	trans[2][1]	= settr(50,0,2,3,3,"b1 = 1", 1, 2, 0);
+	trans[2][2]	= settr(51,0,3,4,4,"b2 = 1", 1, 2, 0);
+	trans[2][3]	= settr(52,0,4,5,5,"turn = 1", 1, 2, 0);
+	trans[2][4]	= settr(53,0,7,6,6,"cs_counter = 0", 1, 2, 0);
+	T = trans[ 2][7] = settr(56,2,0,0,0,"ATOMIC", 0, 2, 0);
+	T->nxt	= settr(56,2,5,0,0,"ATOMIC", 0, 2, 0);
+	trans[2][5]	= settr(54,2,6,7,7,"(run proc1(20))", 0, 2, 0);
+	trans[2][6]	= settr(55,0,8,8,8,"(run proc2(20))", 0, 2, 0);
+	trans[2][8]	= settr(57,0,0,9,9,"-end-", 0, 3500, 0);
 
-	/* proctype 2: obs */
+	/* proctype 1: proc2 */
 
-	trans[2] = (Trans **) emalloc(20*sizeof(Trans *));
+	trans[1] = (Trans **) emalloc(26*sizeof(Trans *));
 
-	trans[2][17]	= settr(56,0,16,1,0,".(goto)", 0, 2, 0);
-	T = trans[2][16] = settr(55,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(55,0,1,0,0,"DO", 0, 2, 0);
-	trans[2][1]	= settr(40,0,14,10,10,"ch?c1,c2,cli", 1, 503, 0);
-	T = trans[2][14] = settr(53,0,0,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(53,0,4,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(53,0,7,0,0,"IF", 0, 2, 0);
-	T = T->nxt	= settr(53,0,10,0,0,"IF", 0, 2, 0);
-	    T->nxt	= settr(53,0,13,0,0,"IF", 0, 2, 0);
-	T = trans[ 2][4] = settr(43,2,0,0,0,"ATOMIC", 0, 2, 0);
-	T->nxt	= settr(43,2,2,0,0,"ATOMIC", 0, 2, 0);
-	trans[2][2]	= settr(41,0,16,11,11,"((c2==1))", 0, 2, 0); /* m: 3 -> 16,0 */
-	reached2[3] = 1;
-	trans[2][3]	= settr(0,0,0,0,0,"assert(((cli==1)||(c1!=3)))",0,0,0);
-	trans[2][15]	= settr(54,0,16,1,0,".(goto)", 0, 2, 0);
-	T = trans[ 2][7] = settr(46,2,0,0,0,"ATOMIC", 0, 2, 0);
-	T->nxt	= settr(46,2,5,0,0,"ATOMIC", 0, 2, 0);
-	trans[2][5]	= settr(44,0,16,12,12,"((c2==2))", 0, 2, 0); /* m: 6 -> 16,0 */
-	reached2[6] = 1;
-	trans[2][6]	= settr(0,0,0,0,0,"assert((c1!=1))",0,0,0);
-	T = trans[ 2][10] = settr(49,2,0,0,0,"ATOMIC", 0, 2, 0);
-	T->nxt	= settr(49,2,8,0,0,"ATOMIC", 0, 2, 0);
-	trans[2][8]	= settr(47,0,16,13,13,"((c2==3))", 0, 2, 0); /* m: 9 -> 16,0 */
-	reached2[9] = 1;
-	trans[2][9]	= settr(0,0,0,0,0,"assert((c1!=2))",0,0,0);
-	T = trans[ 2][13] = settr(52,2,0,0,0,"ATOMIC", 0, 2, 0);
-	T->nxt	= settr(52,2,11,0,0,"ATOMIC", 0, 2, 0);
-	trans[2][11]	= settr(50,0,16,14,14,"((cli==1))", 0, 2, 0); /* m: 12 -> 16,0 */
-	reached2[12] = 1;
-	trans[2][12]	= settr(0,0,0,0,0,"assert((c2==1))",0,0,0);
-	trans[2][18]	= settr(57,0,19,1,0,"break", 0, 2, 0);
-	trans[2][19]	= settr(58,0,0,15,15,"-end-", 0, 3500, 0);
+	trans[1][1]	= settr(25,0,22,10,10,"count = 0", 0, 2, 0);
+	trans[1][23]	= settr(47,0,22,1,0,".(goto)", 0, 2, 0);
+	T = trans[1][22] = settr(46,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(46,0,2,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(46,0,20,0,0,"DO", 0, 2, 0);
+	trans[1][2]	= settr(26,0,3,11,0,"((count<repeat))", 0, 2, 0);
+	trans[1][3]	= settr(27,0,18,12,12,"b2 = 0", 1, 2, 0);
+	T = trans[1][18] = settr(42,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(42,0,4,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(42,0,17,0,0,"IF", 0, 2, 0);
+	trans[1][4]	= settr(28,0,10,13,0,"((turn!=2))", 1, 2, 0);
+	T = trans[1][10] = settr(34,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(34,0,5,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(34,0,7,0,0,"IF", 0, 2, 0);
+	trans[1][5]	= settr(29,0,10,14,0,"(!(b1))", 1, 2, 0);
+	trans[1][6]	= settr(30,0,10,1,0,"goto C2", 0, 2, 0);
+	trans[1][11]	= settr(35,0,12,1,0,".(goto)", 0, 2, 0);
+	trans[1][7]	= settr(31,0,8,2,0,"else", 0, 2, 0);
+	trans[1][8]	= settr(32,0,18,15,15,"turn = 2", 1, 2, 0);
+	trans[1][9]	= settr(33,0,18,1,0,"goto C1", 0, 2, 0);
+	trans[1][12]	= settr(36,0,13,16,16,"cs_counter = (cs_counter+1)", 1, 2, 0);
+	trans[1][13]	= settr(37,0,14,17,0,"assert((cs_counter==1))", 1, 2, 0);
+	trans[1][14]	= settr(38,0,15,18,18,"cs_counter = (cs_counter-1)", 1, 2, 0);
+	trans[1][15]	= settr(39,0,16,19,19,"b2 = 1", 1, 2, 0);
+	trans[1][16]	= settr(40,0,22,20,20,"count = (count+1)", 0, 2, 0);
+	trans[1][19]	= settr(43,0,22,1,0,".(goto)", 0, 2, 0);
+	trans[1][17]	= settr(41,0,22,2,0,"else", 0, 2, 0);
+	trans[1][20]	= settr(44,0,25,2,0,"else", 0, 2, 0);
+	trans[1][21]	= settr(45,0,25,1,0,"goto :b1", 0, 2, 0);
+	trans[1][24]	= settr(48,0,25,1,0,"break", 0, 2, 0);
+	trans[1][25]	= settr(49,0,0,21,21,"-end-", 0, 3500, 0);
 
-	/* proctype 1: panne */
+	/* proctype 0: proc1 */
 
-	trans[1] = (Trans **) emalloc(7*sizeof(Trans *));
+	trans[0] = (Trans **) emalloc(26*sizeof(Trans *));
 
-	trans[1][4]	= settr(37,0,3,1,0,".(goto)", 0, 2, 0);
-	T = trans[1][3] = settr(36,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(36,0,1,0,0,"DO", 0, 2, 0);
-	trans[1][1]	= settr(34,0,2,1,0,"(1)", 0, 2, 0);
-	trans[1][2]	= settr(35,0,3,16,16,"status = 1", 1, 2, 0);
-	trans[1][5]	= settr(38,0,6,1,0,"break", 0, 2, 0);
-	trans[1][6]	= settr(39,0,0,17,17,"-end-", 0, 3500, 0);
-
-	/* proctype 0: feu */
-
-	trans[0] = (Trans **) emalloc(35*sizeof(Trans *));
-
-	trans[0][24]	= settr(23,0,23,1,0,".(goto)", 0, 2, 0);
-	T = trans[0][23] = settr(22,0,0,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(22,0,1,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(22,0,5,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(22,0,9,0,0,"DO", 0, 2, 0);
-	T = T->nxt	= settr(22,0,13,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(22,0,17,0,0,"DO", 0, 2, 0);
-	trans[0][1]	= settr(0,0,2,18,0,"((status==3))", 1, 2, 0);
-	trans[0][2]	= settr(1,0,3,19,19,"status = 2", 1, 2, 0);
-	trans[0][3]	= settr(2,0,4,20,20,"clignotant = 0", 1, 2, 0);
-	trans[0][4]	= settr(3,0,23,21,21,"light_col = 3", 1, 2, 0);
-	trans[0][5]	= settr(4,0,6,22,0,"(((status==2)&&(light_col==3)))", 1, 2, 0);
-	trans[0][6]	= settr(5,0,7,23,23,"couleur1 = light_col", 1, 2, 0);
-	trans[0][7]	= settr(6,0,8,24,24,"light_col = 2", 1, 2, 0);
-	trans[0][8]	= settr(7,0,23,25,25,"ch!couleur1,light_col,clignotant", 1, 3, 0);
-	trans[0][9]	= settr(8,0,10,26,0,"(((status==2)&&(light_col==2)))", 1, 2, 0);
-	trans[0][10]	= settr(9,0,11,27,27,"couleur1 = light_col", 1, 2, 0);
-	trans[0][11]	= settr(10,0,12,28,28,"light_col = 1", 1, 2, 0);
-	trans[0][12]	= settr(11,0,23,29,29,"ch!couleur1,light_col,clignotant", 1, 3, 0);
-	trans[0][13]	= settr(12,0,14,30,0,"(((status==2)&&(light_col==1)))", 1, 2, 0);
-	trans[0][14]	= settr(13,0,15,31,31,"couleur1 = light_col", 1, 2, 0);
-	trans[0][15]	= settr(14,0,16,32,32,"light_col = 3", 1, 2, 0);
-	trans[0][16]	= settr(15,0,23,33,33,"ch!couleur1,light_col,clignotant", 1, 3, 0);
-	trans[0][17]	= settr(16,0,18,1,0,"(1)", 0, 2, 0);
-	trans[0][18]	= settr(17,0,19,34,34,"couleur1 = light_col", 1, 2, 0);
-	trans[0][19]	= settr(18,0,20,35,35,"clignotant = 1", 1, 2, 0);
-	trans[0][20]	= settr(19,0,21,36,36,"light_col = 1", 1, 2, 0);
-	trans[0][21]	= settr(20,0,31,37,37,"ch!couleur1,light_col,clignotant", 1, 3, 0);
-	trans[0][22]	= settr(21,0,31,1,0,"goto panne", 0, 2, 0);
-	trans[0][25]	= settr(24,0,31,1,0,"break", 0, 2, 0);
-	trans[0][32]	= settr(31,0,31,1,0,".(goto)", 0, 2, 0);
-	T = trans[0][31] = settr(30,0,0,0,0,"DO", 0, 2, 0);
-	    T->nxt	= settr(30,0,26,0,0,"DO", 0, 2, 0);
-	trans[0][26]	= settr(25,0,27,1,0,"(1)", 0, 2, 0);
-	trans[0][27]	= settr(26,0,28,38,38,"couleur1 = light_col", 1, 2, 0);
-	trans[0][28]	= settr(27,0,29,39,39,"light_col = 1", 1, 2, 0);
-	trans[0][29]	= settr(28,0,30,40,40,"clignotant = 1", 1, 2, 0);
-	trans[0][30]	= settr(29,0,31,41,41,"ch!couleur1,light_col,clignotant", 1, 3, 0);
-	trans[0][33]	= settr(32,0,34,1,0,"break", 0, 2, 0);
-	trans[0][34]	= settr(33,0,0,42,42,"-end-", 0, 3500, 0);
+	trans[0][1]	= settr(0,0,22,22,22,"count = 0", 0, 2, 0);
+	trans[0][23]	= settr(22,0,22,1,0,".(goto)", 0, 2, 0);
+	T = trans[0][22] = settr(21,0,0,0,0,"DO", 0, 2, 0);
+	T = T->nxt	= settr(21,0,2,0,0,"DO", 0, 2, 0);
+	    T->nxt	= settr(21,0,20,0,0,"DO", 0, 2, 0);
+	trans[0][2]	= settr(1,0,3,23,0,"((count<repeat))", 0, 2, 0);
+	trans[0][3]	= settr(2,0,18,24,24,"b1 = 0", 1, 2, 0);
+	T = trans[0][18] = settr(17,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(17,0,4,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(17,0,17,0,0,"IF", 0, 2, 0);
+	trans[0][4]	= settr(3,0,10,25,0,"((turn!=1))", 1, 2, 0);
+	T = trans[0][10] = settr(9,0,0,0,0,"IF", 0, 2, 0);
+	T = T->nxt	= settr(9,0,5,0,0,"IF", 0, 2, 0);
+	    T->nxt	= settr(9,0,7,0,0,"IF", 0, 2, 0);
+	trans[0][5]	= settr(4,0,10,26,0,"(!(b2))", 1, 2, 0);
+	trans[0][6]	= settr(5,0,10,1,0,"goto C2", 0, 2, 0);
+	trans[0][11]	= settr(10,0,12,1,0,".(goto)", 0, 2, 0);
+	trans[0][7]	= settr(6,0,8,2,0,"else", 0, 2, 0);
+	trans[0][8]	= settr(7,0,18,27,27,"turn = 1", 1, 2, 0);
+	trans[0][9]	= settr(8,0,18,1,0,"goto C1", 0, 2, 0);
+	trans[0][12]	= settr(11,0,13,28,28,"cs_counter = (cs_counter+1)", 1, 2, 0);
+	trans[0][13]	= settr(12,0,14,29,0,"assert((cs_counter==1))", 1, 2, 0);
+	trans[0][14]	= settr(13,0,15,30,30,"cs_counter = (cs_counter-1)", 1, 2, 0);
+	trans[0][15]	= settr(14,0,16,31,31,"b1 = 1", 1, 2, 0);
+	trans[0][16]	= settr(15,0,22,32,32,"count = (count+1)", 0, 2, 0);
+	trans[0][19]	= settr(18,0,22,1,0,".(goto)", 0, 2, 0);
+	trans[0][17]	= settr(16,0,22,2,0,"else", 0, 2, 0);
+	trans[0][20]	= settr(19,0,25,2,0,"else", 0, 2, 0);
+	trans[0][21]	= settr(20,0,25,1,0,"goto :b0", 0, 2, 0);
+	trans[0][24]	= settr(23,0,25,1,0,"break", 0, 2, 0);
+	trans[0][25]	= settr(24,0,0,33,33,"-end-", 0, 3500, 0);
 	/* np_ demon: */
 	trans[_NP_] = (Trans **) emalloc(3*sizeof(Trans *));
 	T = trans[_NP_][0] = settr(9997,0,1,_T5,0,"(np_)", 1,2,0);
