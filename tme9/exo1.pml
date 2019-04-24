@@ -161,8 +161,9 @@ active proctype observateur() {
 	mtype dir ;
 	do
 		::go?(dir) -> if
-		::dir==EXIT -> printf("go EXIT") ; goto exit
-		::else -> printf("go %e\n", dir) // %e pour afficher un mtype
+					  ::dir==EXIT -> printf("go EXIT") ; goto exit
+					  ::else -> printf("go %e\n", dir) 
+					  // %e pour afficher un mtype
 	fi
 	od
 	exit:

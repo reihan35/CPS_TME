@@ -1,50 +1,52 @@
 mtype { RED, GREEN };
 proctype Sensor(chan sense; chan signal) {
 	bool b;
+	
 	end: // pas de deadlock ici
-	do
-	::sense?b -> signal!true
-	od
+		do
+		::sense?b -> signal!true
+		od
 }
+
 int voie = 0;
+
 proctype Feu(chan swtch; chan change) {
 	bool b;
 	mtype color;
 	
 
 	end_red_color:
-	color = RED ;
-	change!color ;
+					color = RED ;
+					change!color ;
 	
 	end_wait_swtch:
-		swtch?(b) -> if
-					::color == RED -> goto end_green_color
-					::color == GREEN -> goto end_red_color
-					fi
+					swtch?(b) -> if
+								::color == RED -> goto end_green_color
+								::color == GREEN -> goto end_red_color
+								fi
 	end_green_color:
-		color = GREEN ;
-		change!color ;
-		goto end_wait_swtch
+					color = GREEN ;
+					change!color ;
+					goto end_wait_swtch
 
 }
 
 proctype Train(chan sensorI; chan sensorO; chan change){
 	mtype color = RED;
 	loin:
-			do
-				::true -> goto arrivee;
-				::else -> 
-			od
+		do
+		::true -> goto arrivee;
+		::else -> 
+		od
 	
 	arrivee:
 			sensorI ! true;
 			change ? color ;
-						if
-						:: color == GREEN -> goto voie_u;
-						:: color == RED -> goto arrivee;
-						fi
+			if
+			:: color == GREEN -> goto voie_u;
+			:: color == RED -> goto arrivee;
+			fi
 	voie_u:
-	
 		voie ++;
 	
 	sortie: 
@@ -53,11 +55,11 @@ proctype Train(chan sensorI; chan sensorO; chan change){
 }
 
 proctype Controleur(chan gI1; chan gO1; chan w1; chan w2; chan gI2; chan gO2){
-
+	mtype signal = true;
 	LLRR : 
 				if
-				::gI1 ? signal -> goto ALRR
-				::gI2 ? signal -> goto LARR
+				:: gI1 ? signal -> goto ALRR;
+				:: gI2 ? signal -> goto LARR;
 				fi
 
 	ALRR : 
@@ -78,7 +80,7 @@ proctype Controleur(chan gI1; chan gO1; chan w1; chan w2; chan gI2; chan gO2){
 				::w2 ? signal ->goto AARV
 				fi
 	ALVR:
-				::true -> goto VLVR				
+				true -> goto VLVR				
 	
 	VLVR:	
 				if
@@ -86,18 +88,18 @@ proctype Controleur(chan gI1; chan gO1; chan w1; chan w2; chan gI2; chan gO2){
 				::gI2 ? signal ->goto VAVR				
 				fi
 	SLVR:
-				::w1 -> goto SLRR
+				w1 -> goto SLRR
 	SLRR :
-				::true -> goto LLRR
+				true -> goto LLRR
 	AAVR : 
-				::true -> goto VAVR
+				true -> goto VAVR
 	VAVR : 
-				::gO1 ? signal ->goto SAVR
+				gO1 ? signal ->goto SAVR
 	SAVR : 
-				::w1 ? signal ->goto SARR
+				w1 ? signal ->goto SARR
 	SARR : 
-				::true -> LARR
-	LAVR : 
+				true -> LARR
+	LARV : 
 				if
 				::gI1 ? signal ->goto AARV
 				::true ->goto LVRV
@@ -108,22 +110,34 @@ proctype Controleur(chan gI1; chan gO1; chan w1; chan w2; chan gI2; chan gO2){
 				::gO2 ? signal -> goto LSRV
 				fi
 	AARV :
-				::gI1 ? signal -> goto AURV
+				gI1 ? signal -> goto AURV
 
 	AURV : 
-				::gO2 ? signal -> goto ASRV
+				gO2 ? signal -> goto ASRV
 
 	ASRV : 
 				
-				::w2 ? signal ->goto ASRR
+				w2 ? signal ->goto ASRR
 
 	ASRR : 
-				::true -> ALRR
+				true -> ALRR
 
 	LSRV : 
-				::w2 ? signal ->goto LSRR
+				w2 ? signal ->goto LSRR
 	LSRR : 
-				::true -> LRR	
-
+				true -> LLRR
 }
+
+init {
+	voie = 0;
+	
+	atomic{
+		run Controleur();
+		run Train();
+		run Train();
+		run Feu();
+	}
+}
+
+
 
